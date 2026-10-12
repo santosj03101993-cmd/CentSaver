@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123d32">
+  <meta name="description" content="CentSaver: bilingual learning, quizzes, and a clearly labeled demo rewards dashboard.">
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <title>CentSaver — Learn • Discover • Earn</title>
+  <style>
+    :root{--green:#123d32;--green2:#1e6551;--mint:#e5f4df;--cream:#f7f7f2;--ink:#18332b;--muted:#64756e;--line:#dce6df;--white:#fff;--gold:#f2c66d}
+    *{box-sizing:border-box} body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+    button,input{font:inherit} button{cursor:pointer} a{color:var(--green2)}
+    .top{background:var(--green);color:#fff;padding:18px 16px 24px}.topinner,.wrap{max-width:920px;margin:auto}
+    .brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:15px;background:var(--mint);color:var(--green);display:grid;place-items:center;font-size:26px;font-weight:900}
+    h1{font-size:1.4rem;margin:0} .tagline{color:#d6e9df;font-size:.9rem;margin-top:2px}.topline{display:flex;justify-content:space-between;align-items:center;gap:12px}
+    .lang{background:#214f43;color:#fff;border:1px solid #588073;border-radius:12px;padding:8px 10px}
+    .hero{margin-top:22px;max-width:600px}.hero h2{font-size:1.65rem;line-height:1.15;margin:0 0 8px}.hero p{margin:0;color:#d6e9df}
+    .wrap{padding:16px}.notice{background:#fff5d8;border:1px solid #ecd28c;padding:12px 14px;border-radius:14px;font-size:.9rem;margin:0 0 16px}
+    .balance{background:#fff;border:1px solid var(--line);border-radius:20px;padding:18px;display:flex;justify-content:space-between;align-items:center;gap:16px;box-shadow:0 4px 18px #163e3210}
+    .eyebrow{font-size:.78rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:750}.amount{font-size:2rem;font-weight:850;letter-spacing:-.04em;margin:2px 0}.demo{font-size:.8rem;color:#805e13;background:#fff2ce;border-radius:8px;padding:5px 8px;display:inline-block}
+    .coin{width:58px;height:58px;border-radius:18px;background:var(--mint);display:grid;place-items:center;font-size:28px}
+    .nav{display:flex;gap:8px;overflow:auto;padding:16px 0 12px}.nav button{border:1px solid var(--line);border-radius:999px;padding:9px 14px;background:#fff;white-space:nowrap;color:var(--ink);font-weight:700}.nav button.active{background:var(--green);color:#fff;border-color:var(--green)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;min-width:0}.card h3{margin:5px 0 7px;font-size:1.05rem}.card p{margin:0 0 12px;color:var(--muted);font-size:.92rem}.icon{font-size:1.6rem}.pill{font-size:.74rem;font-weight:750;background:#edf5ed;color:#276044;padding:4px 8px;border-radius:999px;display:inline-block}
+    .primary,.secondary{border:0;border-radius:12px;padding:10px 13px;font-weight:750}.primary{background:var(--green);color:#fff}.primary:disabled{opacity:.45;cursor:not-allowed}.secondary{background:#edf4ef;color:var(--green)}.full{width:100%}
+    .sectionhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0 12px}.sectionhead h2{margin:0;font-size:1.2rem}.small{font-size:.82rem;color:var(--muted)}
+    .article{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:12px}.article h3{margin:0 0 7px}.article p{color:#465a51;margin:0 0 10px}.article details{border-top:1px solid var(--line);padding-top:10px}.article summary{font-weight:750;cursor:pointer}
+    .quizq{font-weight:750;margin-bottom:12px}.answers{display:grid;gap:8px}.answers button{text-align:left;border:1px solid var(--line);background:#fff;padding:12px;border-radius:12px}.answers button.chosen{border-color:var(--green2);background:#edf7ed}.feedback{font-weight:700;margin-top:10px;min-height:24px}.walletrow{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}.walletrow:last-child{border-bottom:0}
+    .empty{border:1px dashed #b7c9bd;border-radius:16px;padding:22px;text-align:center;color:var(--muted);background:#ffffff80}.footer{padding:24px 16px 36px;text-align:center;color:var(--muted);font-size:.82rem}
+    .hidden{display:none!important}.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#163e32;color:white;padding:11px 16px;border-radius:12px;box-shadow:0 6px 25px #0002;max-width:90%;z-index:10}
+    @media(min-width:650px){.top{padding:22px 24px 30px}.wrap{padding:22px}.hero h2{font-size:2rem}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+    @media(max-width:400px){.grid{grid-template-columns:1fr}.balance{align-items:flex-start}.amount{font-size:1.8rem}}
+  </style>
+</head>
+<body>
+  <header class="top"><div class="topinner">
+    <div class="topline">
+      <div class="brand"><div class="logo" aria-hidden="true">₵</div><div><h1>CentSaver</h1><div class="tagline" data-i18n="tagline">Learn • Discover • Earn</div></div></div>
+      <select class="lang" id="language" aria-label="Language"><option value="en">English</option><option value="tl">Tagalog</option></select>
+    </div>
+    <div class="hero"><h2 data-i18n="heroTitle">Small steps. Useful knowledge.</h2><p data-i18n="heroText">Read practical tips, try quick quizzes, and explore rewards safely.</p></div>
+  </div></header>
+  <main class="wrap">
+    <div class="notice"><strong data-i18n="demoNoticeTitle">Demo mode:</strong> <span data-i18n="demoNotice">This is a prototype. Points and balance are pretend, have no cash value, and cannot be withdrawn.</span></div>
+    <section class="balance" aria-label="Demo balance">
+      <div><div class="eyebrow" data-i18n="balanceLabel">Your demo balance</div><div class="amount" id="balance">₱0.00</div><span class="demo" data-i18n="notMoney">NOT REAL MONEY</span></div>
+      <div class="coin" aria-hidden="true">🪙</div>
+    </section>
+    <nav class="nav" aria-label="Main navigation">
+      <button class="active" data-view="home" data-i18n="navHome">Home</button><button data-view="learn" data-i18n="navLearn">Learn</button><button data-view="quiz" data-i18n="navQuiz">Quizzes</button><button data-view="rewards" data-i18n="navRewards">Rewards</button><button data-view="wallet" data-i18n="navWallet">Wallet</button>
+    </nav>
+    <section id="view-home" class="view">
+      <div class="sectionhead"><h2 data-i18n="startHere">Start here</h2><span class="small" data-i18n="freeToUse">Free to use</span></div>
+      <div class="grid">
+        <article class="card"><div class="icon">📚</div><h3 data-i18n="learnCard">Learn something useful</h3><p data-i18n="learnCardText">Short guides on budgeting, online safety, and smart saving.</p><button class="secondary full" data-goto="learn" data-i18n="readGuides">Read guides</button></article>
+        <article class="card"><div class="icon">🧠</div><h3 data-i18n="quizCard">Try a quick quiz</h3><p data-i18n="quizCardText">Answer a knowledge question. Demo points are for testing only.</p><button class="secondary full" data-goto="quiz" data-i18n="tryQuiz">Try a quiz</button></article>
+        <article class="card"><div class="icon">🎁</div><h3 data-i18n="rewardsCard">Explore rewards</h3><p data-i18n="rewardsCardText">See how a future rewards program could work, without fake offers.</p><button class="secondary full" data-goto="rewards" data-i18n="viewRewards">View rewards</button></article>
+      </div>
+      <div class="sectionhead" style="margin-top:22px"><h2 data-i18n="safetyFirst">Safety first</h2></div>
+      <article class="article"><h3 data-i18n="safetyTitle">Never pay to unlock earnings</h3><p data-i18n="safetyText">A legitimate app should explain who pays, why you qualify, minimum withdrawals, fees, and privacy practices. Never click your own ads or ask friends to click ads to help you earn.</p></article>
+    </section>
+    <section id="view-learn" class="view hidden">
+      <div class="sectionhead"><h2 data-i18n="learningLibrary">Learning library</h2><span class="small" data-i18n="threeGuides">3 short guides</span></div>
+      <article class="article"><h3 data-i18n="guide1Title">1. Make a simple budget</h3><p data-i18n="guide1Text">Write down money coming in and money going out. Separate needs, wants, and savings. Review it weekly and adjust without judging yourself.</p><details><summary data-i18n="quickTip">Quick tip</summary><p data-i18n="guide1Tip">Try tracking just three categories for a week: essentials, extras, and savings.</p></details></article>
+      <article class="article"><h3 data-i18n="guide2Title">2. Spot online earning scams</h3><p data-i18n="guide2Text">Be careful with guaranteed-profit claims, upfront fees, requests for one-time passwords, and tasks that ask you to manipulate ad clicks.</p><details><summary data-i18n="quickTip">Quick tip</summary><p data-i18n="guide2Tip">Verify the company on its official site. Never share your GCash MPIN or OTP.</p></details></article>
+      <article class="article"><h3 data-i18n="guide3Title">3. Understand ad revenue</h3><p data-i18n="guide3Text">Advertisers pay publishers for eligible ad views or interactions under strict rules. Earnings depend on audience, ad format, location, and advertiser demand.</p><details><summary data-i18n="quickTip">Quick tip</summary><p data-i18n="guide3Tip">Never click your own ads, encourage accidental clicks, or promise users cash for ad clicks unless the ad provider explicitly permits the arrangement.</p></details></article>
+    </section>
+    <section id="view-quiz" class="view hidden">
+      <div class="sectionhead"><h2 data-i18n="quizTitle">Knowledge check</h2><span class="pill" data-i18n="demoOnly">Demo only</span></div>
+      <article class="article">
+        <div class="quizq" data-i18n="question">Which is the safest response if a website asks for your GCash OTP to release a reward?</div>
+        <div class="answers" id="answers">
+          <button data-correct="false" data-i18n="answer1">Share it if the reward is large</button>
+          <button data-correct="true" data-i18n="answer2">Never share it; stop and verify the site</button>
+          <button data-correct="false" data-i18n="answer3">Post it in a support chat</button>
+        </div>
+        <div class="feedback" id="feedback" aria-live="polite"></div>
+        <button class="primary" id="nextQuiz" disabled data-i18n="nextQuestion">Try again</button>
+        <p class="small" style="margin-top:12px" data-i18n="quizDisclaimer">A correct answer adds 10 demo points only. These points are not money.</p>
+      </article>
+    </section>
+    <section id="view-rewards" class="view hidden">
+      <div class="sectionhead"><h2 data-i18n="rewardsTitle">Rewards center</h2><span class="pill" data-i18n="preview">Preview</span></div>
+      <article class="article"><h3 data-i18n="futureRewards">Potential future rewards</h3><p data-i18n="futureRewardsText">This section is a placeholder. No sponsor, offer provider, or cash payout is connected yet.</p><div class="walletrow"><span data-i18n="originalContent">Read original content</span><strong data-i18n="availableNow">Available now</strong></div><div class="walletrow"><span data-i18n="partnerOffers">Verified partner offers</span><strong data-i18n="notConnected">Not connected</strong></div><div class="walletrow"><span data-i18n="cashOut">Cash out to GCash</span><strong data-i18n="notAvailable">Not available</strong></div></article>
+      <article class="article"><h3 data-i18n="ethicalAds">Ethical advertising rules</h3><p data-i18n="ethicalAdsText">Only add ads after approval. Do not reward people for clicking ordinary ads, generate fake views, or display ads in a way that tricks users.</p></article>
+    </section>
+    <section id="view-wallet" class="view hidden">
+      <div class="sectionhead"><h2 data-i18n="walletTitle">Demo wallet</h2><button class="secondary" id="reset" data-i18n="resetDemo">Reset demo</button></div>
+      <article class="article">
+        <div class="eyebrow" data-i18n="demoPoints">Demo points</div><div class="amount"><span id="points">0</span> <span style="font-size:1rem" data-i18n="points">points</span></div>
+        <p data-i18n="walletDisclaimer">These points are stored only in this browser for demonstration. They are not redeemable and are not linked to GCash, PayPal, or an ad network.</p>
+        <div class="walletrow"><span data-i18n="earnedFromQuiz">Earned from quizzes</span><strong id="earned">0 points</strong></div>
+        <div class="walletrow"><span data-i18n="cashValue">Cash value</span><strong>₱0.00</strong></div>
+        <div class="walletrow"><span data-i18n="withdrawalStatus">Withdrawal status</span><strong data-i18n="disabled">Disabled</strong></div>
+      </article>
+      <div class="empty"><div style="font-size:1.7rem">🔒</div><strong data-i18n="noPayments">No payments are connected</strong><p data-i18n="noPaymentsText">A real payout system needs an approved provider, clear terms, fraud prevention, and secure handling of user data.</p></div>
+    </section>
+  </main>
+  <footer class="footer"><div>CentSaver prototype • <span data-i18n="builtForLearning">Built for learning and safe testing</span></div><div style="margin-top:5px" data-i18n="noGuarantee">No earnings or payouts are promised.</div></footer>
+  <div id="toast" class="toast hidden" role="status"></div>
+<script>
+const translations = {
+en:{
+ tagline:"Learn • Discover • Earn",heroTitle:"Small steps. Useful knowledge.",heroText:"Read practical tips, try quick quizzes, and explore rewards safely.",
+ demoNoticeTitle:"Demo mode:",demoNotice:"This is a prototype. Points and balance are pretend, have no cash value, and cannot be withdrawn.",balanceLabel:"Your demo balance",notMoney:"NOT REAL MONEY",
+ navHome:"Home",navLearn:"Learn",navQuiz:"Quizzes",navRewards:"Rewards",navWallet:"Wallet",startHere:"Start here",freeToUse:"Free to use",
+ learnCard:"Learn something useful",learnCardText:"Short guides on budgeting, online safety, and smart saving.",readGuides:"Read guides",quizCard:"Try a quick quiz",quizCardText:"Answer a knowledge question. Demo points are for testing only.",tryQuiz:"Try a quiz",rewardsCard:"Explore rewards",rewardsCardText:"See how a future rewards program could work, without fake offers.",viewRewards:"View rewards",safetyFirst:"Safety first",safetyTitle:"Never pay to unlock earnings",safetyText:"A legitimate app should explain who pays, why you qualify, minimum withdrawals, fees, and privacy practices. Never click your own ads or ask friends to click ads to help you earn.",
+ learningLibrary:"Learning library",threeGuides:"3 short guides",guide1Title:"1. Make a simple budget",guide1Text:"Write down money coming in and money going out. Separate needs, wants, and savings. Review it weekly and adjust without judging yourself.",quickTip:"Quick tip",guide1Tip:"Try tracking just three categories for a week: essentials, extras, and savings.",guide2Title:"2. Spot online earning scams",guide2Text:"Be careful with guaranteed-profit claims, upfront fees, requests for one-time passwords, and tasks that ask you to manipulate ad clicks.",guide2Tip:"Verify the company on its official site. Never share your GCash MPIN or OTP.",guide3Title:"3. Understand ad revenue",guide3Text:"Advertisers pay publishers for eligible ad views or interactions under strict rules. Earnings depend on audience, ad format, location, and advertiser demand.",guide3Tip:"Never click your own ads, encourage accidental clicks, or promise users cash for ad clicks unless the ad provider explicitly permits the arrangement.",
+ quizTitle:"Knowledge check",demoOnly:"Demo only",question:"Which is the safest response if a website asks for your GCash OTP to release a reward?",answer1:"Share it if the reward is large",answer2:"Never share it; stop and verify the site",answer3:"Post it in a support chat",nextQuestion:"Try again",quizDisclaimer:"A correct answer adds 10 demo points only. These points are not money.",correct:"Correct! You earned 10 demo points — not cash.",incorrect:"Not quite. Never share an OTP. Try again.",alreadyAnswered:"You've answered this demo question already.",
+ rewardsTitle:"Rewards center",preview:"Preview",futureRewards:"Potential future rewards",futureRewardsText:"This section is a placeholder. No sponsor, offer provider, or cash payout is connected yet.",originalContent:"Read original content",availableNow:"Available now",partnerOffers:"Verified partner offers",notConnected:"Not connected",cashOut:"Cash out to GCash",notAvailable:"Not available",ethicalAds:"Ethical advertising rules",ethicalAdsText:"Only add ads after approval. Do not reward people for clicking ordinary ads, generate fake views, or display ads in a way that tricks users.",
+ walletTitle:"Demo wallet",resetDemo:"Reset demo",demoPoints:"Demo points",points:"points",walletDisclaimer:"These points are stored only in this browser for demonstration. They are not redeemable and are not linked to GCash, PayPal, or an ad network.",earnedFromQuiz:"Earned from quizzes",cashValue:"Cash value",withdrawalStatus:"Withdrawal status",disabled:"Disabled",noPayments:"No payments are connected",noPaymentsText:"A real payout system needs an approved provider, clear terms, fraud prevention, and secure handling of user data.",builtForLearning:"Built for learning and safe testing",noGuarantee:"No earnings or payouts are promised.",resetDone:"Demo wallet reset."
+},
+tl:{
+ tagline:"Matuto • Tumuklas • Kumita",heroTitle:"Maliliit na hakbang. Mahahalagang kaalaman.",heroText:"Magbasa ng praktikal na tips, sumagot ng maiikling quiz, at alamin ang ligtas na rewards.",
+ demoNoticeTitle:"Demo mode:",demoNotice:"Prototype pa lamang ito. Peke para sa pagsubok ang points at balanse, walang katumbas na pera, at hindi maaaring i-withdraw.",balanceLabel:"Iyong demo balance",notMoney:"HINDI TUNAY NA PERA",
+ navHome:"Home",navLearn:"Matuto",navQuiz:"Mga Quiz",navRewards:"Rewards",navWallet:"Wallet",startHere:"Magsimula rito",freeToUse:"Libre gamitin",
+ learnCard:"Matuto ng kapaki-pakinabang",learnCardText:"Maiikling gabay tungkol sa budget, online safety, at pag-iipon.",readGuides:"Basahin ang gabay",quizCard:"Subukan ang quiz",quizCardText:"Sagutin ang tanong. Para lamang sa pagsubok ang demo points.",tryQuiz:"Subukan ang quiz",rewardsCard:"Tingnan ang rewards",rewardsCardText:"Alamin kung paano maaaring gumana ang rewards sa hinaharap—walang pekeng alok.",viewRewards:"Tingnan ang rewards",safetyFirst:"Unahin ang kaligtasan",safetyTitle:"Huwag magbayad para makuha ang kita",safetyText:"Dapat malinaw sa lehitimong app kung sino ang nagbabayad, mga kwalipikasyon, minimum withdrawal, bayarin, at privacy. Huwag i-click ang sarili mong ads o utusan ang mga kaibigan na mag-click para kumita ka.",
+ learningLibrary:"Mga gabay",threeGuides:"3 maiikling gabay",guide1Title:"1. Gumawa ng simpleng budget",guide1Text:"Isulat ang perang pumapasok at lumalabas. Ihiwalay ang pangangailangan, gusto, at ipon. Suriin linggo-linggo at mag-adjust nang walang panghuhusga sa sarili.",quickTip:"Mabilis na tip",guide1Tip:"Subaybayan muna sa loob ng isang linggo ang tatlong kategorya: kailangan, dagdag-gastos, at ipon.",guide2Title:"2. Kilalanin ang online scam",guide2Text:"Mag-ingat sa garantisadong kita, paunang bayad, paghingi ng OTP, at mga gawaing nagpapamanipula ng ad clicks.",guide2Tip:"Suriin ang kumpanya sa opisyal na website nito. Huwag ibigay ang iyong GCash MPIN o OTP.",guide3Title:"3. Unawain ang kita sa ads",guide3Text:"Nagbabayad ang mga advertiser para sa mga kwalipikadong ad view o interaction ayon sa mahigpit na patakaran. Nakadepende ang kita sa audience, format, lokasyon, at demand.",guide3Tip:"Huwag i-click ang sarili mong ads, hikayatin ang aksidenteng pag-click, o mangakong magbabayad sa users para sa ad clicks maliban kung tahasang pinapayagan ito ng provider.",
+ quizTitle:"Pagsubok sa kaalaman",demoOnly:"Demo lamang",question:"Ano ang pinakaligtas na gawin kung humingi ang website ng GCash OTP para ibigay ang reward?",answer1:"Ibigay kung malaki ang reward",answer2:"Huwag ibigay; huminto at suriin ang website",answer3:"I-post ito sa support chat",nextQuestion:"Subukan muli",quizDisclaimer:"10 demo points lamang ang idadagdag sa tamang sagot. Hindi ito pera.",correct:"Tama! May 10 demo points ka — hindi cash.",incorrect:"Hindi pa. Huwag kailanman ibigay ang OTP. Subukan muli.",alreadyAnswered:"Nasagutan mo na ang demo question na ito.",
+ rewardsTitle:"Rewards center",preview:"Preview",futureRewards:"Posibleng rewards sa hinaharap",futureRewardsText:"Placeholder lamang ito. Wala pang konektadong sponsor, offer provider, o cash payout.",originalContent:"Magbasa ng sariling content",availableNow:"Available ngayon",partnerOffers:"Beripikadong partner offers",notConnected:"Hindi konektado",cashOut:"I-withdraw sa GCash",notAvailable:"Hindi available",ethicalAds:"Mga tuntunin sa patas na advertising",ethicalAdsText:"Maglagay lamang ng ads kapag naaprubahan. Huwag magbigay ng reward para sa ordinaryong ad clicks, gumawa ng pekeng views, o manlinlang gamit ang ads.",
+ walletTitle:"Demo wallet",resetDemo:"I-reset ang demo",demoPoints:"Demo points",points:"points",walletDisclaimer:"Nakaimbak lamang ang points sa browser na ito para sa demonstrasyon. Hindi ito maaaring ipalit at hindi konektado sa GCash, PayPal, o ad network.",earnedFromQuiz:"Nakuha sa quiz",cashValue:"Halagang pera",withdrawalStatus:"Katayuan ng withdrawal",disabled:"Hindi aktibo",noPayments:"Walang konektadong bayad",noPaymentsText:"Kailangan ng aprubadong provider, malinaw na tuntunin, pag-iwas sa panloloko, at ligtas na paghawak ng datos para sa tunay na payout.",builtForLearning:"Ginawa para sa pagkatuto at ligtas na pagsubok",noGuarantee:"Walang ipinapangakong kita o payout.",resetDone:"Na-reset ang demo wallet."
+}};
+let lang = localStorage.getItem('centsaver_lang') || 'en';
+let points = Number(localStorage.getItem('centsaver_points') || 0);
+let answered = localStorage.getItem('centsaver_answered') === '1';
+const $ = s => document.querySelector(s);
+function tr(key){return translations[lang][key] || translations.en[key] || key}
+function renderLang(){
+ document.documentElement.lang = lang;
+ document.querySelectorAll('[data-i18n]').forEach(el=>{const key=el.dataset.i18n; if(translations[lang][key])el.textContent=translations[lang][key]});
+ $('#language').value=lang; renderBalance(); renderWallet();
+}
+function renderBalance(){ $('#balance').textContent='₱0.00'; }
+function renderWallet(){ $('#points').textContent=points; $('#earned').textContent=points+' '+tr('points'); }
+function toast(message){const el=$('#toast');el.textContent=message;el.classList.remove('hidden');clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>el.classList.add('hidden'),2600)}
+function go(view){document.querySelectorAll('.view').forEach(el=>el.classList.toggle('hidden',el.id!=='view-'+view));document.querySelectorAll('.nav button').forEach(el=>el.classList.toggle('active',el.dataset.view===view));window.scrollTo({top:0,behavior:'smooth'})}
+document.querySelectorAll('[data-view]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.view)));
+document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>go(b.dataset.goto)));
+$('#language').addEventListener('change',e=>{lang=e.target.value;localStorage.setItem('centsaver_lang',lang);renderLang();if(answered){$('#nextQuiz').disabled=true;$('#feedback').textContent=tr('alreadyAnswered')}});
+$('#answers').querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>{
+ if(answered){toast(tr('alreadyAnswered'));return}
+ $('#answers').querySelectorAll('button').forEach(x=>x.classList.remove('chosen'));b.classList.add('chosen');
+ if(b.dataset.correct==='true'){points+=10;answered=true;localStorage.setItem('centsaver_points',points);localStorage.setItem('centsaver_answered','1');$('#feedback').textContent=tr('correct');$('#nextQuiz').disabled=false;renderWallet()}
+ else $('#feedback').textContent=tr('incorrect');
+}));
+$('#nextQuiz').addEventListener('click',()=>{answered=false;localStorage.removeItem('centsaver_answered');$('#feedback').textContent='';$('#answers').querySelectorAll('button').forEach(x=>x.classList.remove('chosen'));$('#nextQuiz').disabled=true;toast(tr('nextQuestion'))});
+$('#reset').addEventListener('click',()=>{points=0;answered=false;localStorage.removeItem('centsaver_points');localStorage.removeItem('centsaver_answered');$('#feedback').textContent='';$('#answers').querySelectorAll('button').forEach(x=>x.classList.remove('chosen'));$('#nextQuiz').disabled=true;renderWallet();toast(tr('resetDone'))});
+renderLang();
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
+let deferredPrompt;window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;const btn=document.createElement('button');btn.className='secondary';btn.textContent='Install CentSaver';btn.style.marginTop='12px';btn.onclick=async()=>{deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;btn.remove()};document.querySelector('.topinner').appendChild(btn)});
+</script>
+</body>
+</html>
